@@ -92,8 +92,5 @@ def game_is_lost(board: list, move: list, turn: str) -> bool:
     return False
 
 
-# def get_diagonals:
-
-
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=80)
