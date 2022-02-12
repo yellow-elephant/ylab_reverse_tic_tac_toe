@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tic Tac Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+            html, body {
+                width: 100%;
+            }
+            h1 {
+                text-align: center;
+            }
+            table {
+                border-collapse: collapse;
+                margin: 0 auto;
+            }
+            td {
+                border: 5px solid black;
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                text-align: center;
+                vertical-align: center;
+            }
+            td > a {
+                font-size: 14px;
+            }
+
+    </style>
+</head>
+<body>
+<h1>You are: {{player}}. It's your turn.</h1>
+<table>
+    {% for x in range(10) %}
+    <tr>
+        {% for y in range(10) %}
+        <td>
+            {% if board[x][y] %}
+            {{ board[x][y] }}
+            {% else %}
+            <a href="{{ url_for('play', row=x, col=y) }}">
+                <div>
+                    Play {{player}}
+                </div>
+            </a>
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
