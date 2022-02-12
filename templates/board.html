@@ -31,6 +31,7 @@
                 width:100%;
             }
 
+
     </style>
 </head>
 <body>
@@ -44,8 +45,9 @@
                 {% if board[x][y] == player%}
                     <div class="text-success">{{player}}</div>
                 {% else %}
-                    <div class="text-warning">{{board[x][y]}}</div>
+                    <div class="text-danger">{{board[x][y]}}</div>
                 {% endif %}
+            {% elif lose %}
             {% else %}
             <a href="{{ url_for('play', row=x, col=y) }}">
                 <div class="play">
@@ -57,5 +59,15 @@
     </tr>
     {% endfor %}
 </table>
+<br>
+{% if lose %}
+    {% if loser == "Player" %}
+        <h1>You've are lost the game.</h1>
+    {% else %}
+        <h1>Congratulations, you're winner!.</h1>
+    {% endif %}
+    <br>
+{% endif %}
+<a href="{{ url_for('reset') }}"><h1  class="text-danger">Reset game</h1></a>
 </body>
 </html>
