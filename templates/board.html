@@ -30,8 +30,6 @@
                 height:100%;
                 width:100%;
             }
-
-
     </style>
 </head>
 <body>
@@ -47,7 +45,7 @@
                 {% else %}
                     <div class="text-danger">{{board[x][y]}}</div>
                 {% endif %}
-            {% elif lose %}
+            {% elif lose or draw%}
             {% else %}
             <a href="{{ url_for('play', row=x, col=y) }}">
                 <div class="play">
@@ -60,6 +58,9 @@
     {% endfor %}
 </table>
 <br>
+{% if draw %}
+    <h1>It's a draw!</h1>
+{% endif %}
 {% if lose %}
     {% if loser == "Player" %}
         <h1>You've are lost the game.</h1>

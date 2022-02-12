@@ -25,15 +25,19 @@ def index():
                 session["board"][x].append(None)
         session["lose"] = False
         session["loser"] = ""
-    if session["whose_turn"] != session["player"]:
-        move = get_ai_move(session["board"])
-        session["board"][move[0]][move[1]] = session["whose_turn"]
-        if game_is_lost(session["board"], move, session["whose_turn"]):
-            session["lose"] = True
-            session["loser"] = "Ai"
-        session["whose_turn"] = change_turn(session["whose_turn"])
+    possible_moves = get_possible_moves(session["board"])
+    if not possible_moves:
+        session["draw"] = True
+    else:
+        if session["whose_turn"] != session["player"]:
+            move = get_ai_move(possible_moves)
+            session["board"][move[0]][move[1]] = session["whose_turn"]
+            if game_is_lost(session["board"], move, session["whose_turn"]):
+                session["lose"] = True
+                session["loser"] = "Ai"
+            session["whose_turn"] = change_turn(session["whose_turn"])
     return render_template("board.html", player=session["player"], board=session["board"], lose=session["lose"],
-                           loser=session["loser"])
+                           loser=session["loser"], draw=session["draw"])
 
 
 @app.route("/choose/<string:player>")
@@ -59,21 +63,23 @@ def reset():
     return redirect(url_for("index"))
 
 
-def get_possible_moves(board: list):
+def get_possible_moves(board: list) -> [list, None]:
     moves = list()
     for x in range(10):
         for y in range(10):
             if not board[x][y]:
                 moves.append([x, y])
+    if moves.__len__() == 0:
+        return None
     return moves
 
 
-def get_ai_move(board: list):
-    return choice(get_possible_moves(board))
+def get_ai_move(possible_moves: list) -> [list]:
+    return choice(possible_moves)
 
 
-def change_turn(turn: str):
-    if turn == "X":
+def change_turn(whose_turn: str) -> str:
+    if whose_turn == "X":
         return "Y"
     else:
         return "X"
