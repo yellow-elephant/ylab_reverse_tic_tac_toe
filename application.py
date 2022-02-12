@@ -87,10 +87,10 @@ def game_is_lost(board: list, move: list, turn: str) -> bool:
     major_diagonal = ''.join(str(cell) for cell in arr.diagonal(offset=move[1] - move[0]))
     minor_diagonal = ''.join(
         str(cell) for cell in np.diagonal(np.rot90(arr), offset=-arr.shape[1] + (move[0] + move[1]) + 1))
-    if any(list(map(lambda x: pattern in x, (row, column, major_diagonal, minor_diagonal)))):
+    if pattern in row or pattern in column or pattern in major_diagonal or pattern in minor_diagonal:
         return True
     return False
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=80)
