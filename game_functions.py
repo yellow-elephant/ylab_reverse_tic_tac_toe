@@ -2,7 +2,6 @@ from random import choice
 import numpy as np
 
 
-
 def get_possible_moves(board: list) -> [list, None]:
     moves = list()
     for x in range(10):
