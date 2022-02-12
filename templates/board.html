@@ -26,22 +26,29 @@
             td > a {
                 font-size: 14px;
             }
+            .play {
+                height:100%;
+                width:100%;
+            }
 
     </style>
 </head>
 <body>
-<h1>You are: {{player}}. It's your turn.</h1>
+<h1>You are: {{player}}. Make a move!</h1>
 <table>
     {% for x in range(10) %}
     <tr>
         {% for y in range(10) %}
         <td>
             {% if board[x][y] %}
-            {{ board[x][y] }}
+                {% if board[x][y] == player%}
+                    <div class="text-success">{{player}}</div>
+                {% else %}
+                    <div class="text-warning">{{board[x][y]}}</div>
+                {% endif %}
             {% else %}
             <a href="{{ url_for('play', row=x, col=y) }}">
-                <div>
-                    Play {{player}}
+                <div class="play">
                 </div>
             </a>
             {% endif %}
