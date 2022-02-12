@@ -53,6 +53,12 @@ def play(row, col):
     return redirect(url_for("index"))
 
 
+@app.route("/reset")
+def reset():
+    session.clear()
+    return redirect(url_for("index"))
+
+
 def get_possible_moves(board: list):
     moves = list()
     for x in range(10):
