@@ -16,28 +16,12 @@ def index():
     if "player" not in session:
         return render_template('choose_player.html')
     if "board" not in session:
-        session["whose_turn"] = "X"
-        session["board"] = list()
-        session["draw"] = False
-        for x in range(10):
-            session["board"].append(list())
-            for y in range(10):
-                session["board"][x].append(None)
-        session["lose"] = False
-        session["loser"] = ""
-    possible_moves = get_possible_moves(session["board"])
-    if not possible_moves:
+        initialize_session()
+    if not get_possible_moves(session["board"]):
         session["draw"] = True
-    else:
-        if session["whose_turn"] != session["player"]:
-            move = get_ai_move(possible_moves)
-            session["board"][move[0]][move[1]] = session["whose_turn"]
-            if game_is_lost(session["board"], move, session["whose_turn"]):
-                session["lose"] = True
-                session["loser"] = "Ai"
-            session["whose_turn"] = change_turn(session["whose_turn"])
-    return render_template("board.html", player=session["player"], board=session["board"], lose=session["lose"],
-                           loser=session["loser"], draw=session["draw"])
+    elif session["whose_turn"] != session["player"]:
+        play_ai_turn()
+    return render_template("board.html", **session)
 
 
 @app.route("/choose/<string:player>")
@@ -63,5 +47,26 @@ def reset():
     return redirect(url_for("index"))
 
 
+def initialize_session():
+    session["whose_turn"] = "X"
+    session["board"] = list()
+    session["draw"] = False
+    for x in range(10):
+        session["board"].append(list())
+        for y in range(10):
+            session["board"][x].append(None)
+    session["lose"] = False
+    session["loser"] = ""
+
+
+def play_ai_turn():
+    move = get_ai_move(get_possible_moves(session["board"]))
+    session["board"][move[0]][move[1]] = session["whose_turn"]
+    if game_is_lost(session["board"], move, session["whose_turn"]):
+        session["lose"] = True
+        session["loser"] = "Ai"
+    session["whose_turn"] = change_turn(session["whose_turn"])
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run()

@@ -8,9 +8,8 @@ def get_possible_moves(board: list) -> [list, None]:
         for y in range(10):
             if not board[x][y]:
                 moves.append([x, y])
-    if moves.__len__() == 0:
-        return None
-    return moves
+    #next line is 10 out of 10!!!
+    return moves or None
 
 
 def get_ai_move(possible_moves: list) -> [list]:
@@ -18,10 +17,7 @@ def get_ai_move(possible_moves: list) -> [list]:
 
 
 def change_turn(whose_turn: str) -> str:
-    if whose_turn == "X":
-        return "Y"
-    else:
-        return "X"
+    return ("X","Y")[whose_turn == "X"]
 
 
 def game_is_lost(board: list, move: list, turn: str) -> bool:
@@ -32,6 +28,4 @@ def game_is_lost(board: list, move: list, turn: str) -> bool:
     major_diagonal = ''.join(str(cell) for cell in arr.diagonal(offset=move[1] - move[0]))
     minor_diagonal = ''.join(
         str(cell) for cell in np.diagonal(np.rot90(arr), offset=-arr.shape[1] + (move[0] + move[1]) + 1))
-    if any(pattern in x for x in [row, column, minor_diagonal, major_diagonal]):
-        return True
-    return False
+    return any(pattern in x for x in (row, column, minor_diagonal, major_diagonal))
